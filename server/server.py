@@ -294,25 +294,109 @@ def run_server_once(host, port, server_capabilities):
                     finished["proof"]
                 )
 
+                
+                
                 confirmed = hmac.compare_digest(
                     expected_proof,
                     received_proof,
                 )
 
-                result = {
-                    **negotiation,
-                    "execution": "SUCCESS",
-                    "key_confirmation": (
-                        "SUCCESS" if confirmed else "FAILED"
-                    ),
-                }
+                # Step 1: Reject an invalid client proof immediately.
+                if not confirmed:
+                    send_message(
+                        file,
+                        {
+                            "status": "FAILED",
+                            "key_confirmation": "FAILED",
+                            "reason": "Client key confirmation failed.",
+                        },
+                    )
 
+                    return {
+                        **negotiation,
+                        "execution": "SUCCESS",
+                        "key_confirmation": "FAILED",
+                    }
+
+                # Step 2: Generate the server's proof only after
+                # successfully verifying the client's proof.
+                server_proof = hmac.new(
+                    session_key,
+                    b"server-finished:"
+                    + nonce
+                    + transcript_hash
+                    + received_proof,
+                    hashlib.sha256,
+                ).digest()
+
+                # Step 3: Send the server's proof to the client.
                 send_message(
                     file,
                     {
-                        "status": "SUCCESS" if confirmed else "FAILED",
-                        "key_confirmation": result["key_confirmation"],
+                        "status": "SUCCESS",
+                        "key_confirmation": "SUCCESS",
+                        "server_proof": encode_bytes(server_proof),
                     },
                 )
 
-                return result
+                # Step 4: Wait for the client's authenticated acknowledgement.
+                try:
+                    acknowledgement = receive_message(file)
+
+                    received_ack = decode_bytes(
+                        acknowledgement["client_ack"]
+                    )
+
+                except (ConnectionError, OSError, KeyError, ValueError):
+                    return {
+                        **negotiation,
+                        "execution": "SUCCESS",
+                        "key_confirmation": "FAILED",
+                        "reason": "Client acknowledgement was not received or was invalid.",
+                    }
+
+                # Step 5: Independently verify the client's acknowledgement.
+                expected_ack = hmac.new(
+                    session_key,
+                    b"client-ack:"
+                    + nonce
+                    + transcript_hash
+                    + server_proof,
+                    hashlib.sha256,
+                ).digest()
+
+                acknowledgement_verified = hmac.compare_digest(
+                    expected_ack,
+                    received_ack,
+                )
+
+                if not acknowledgement_verified:
+                    send_message(
+                        file,
+                        {
+                            "status": "FAILED",
+                            "key_confirmation": "FAILED",
+                            "reason": "Client acknowledgement verification failed.",
+                        },
+                    )
+
+                    return {
+                        **negotiation,
+                        "execution": "SUCCESS",
+                        "key_confirmation": "FAILED",
+                    }
+
+                # Step 6: Both parties have completed key confirmation.
+                send_message(
+                    file,
+                    {
+                        "status": "SUCCESS",
+                        "key_confirmation": "SUCCESS",
+                    },
+                )
+
+                return {
+                    **negotiation,
+                    "execution": "SUCCESS",
+                    "key_confirmation": "SUCCESS",
+                }

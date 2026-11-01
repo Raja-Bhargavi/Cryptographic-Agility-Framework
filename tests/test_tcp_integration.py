@@ -219,3 +219,63 @@ def test_tcp_detects_modified_client_capabilities(monkeypatch):
     # did not complete.
     assert server["status"] == "FAILED"
     assert server["authentication"] == "FAILED"
+
+
+
+def test_tcp_detects_modified_server_proof(monkeypatch):
+    """Verify that the client rejects a modified server HMAC proof."""
+
+    import base64
+    import client.client as client_module
+
+    original_receive_message = client_module.receive_message
+    receive_count = 0
+
+    def tampered_receive_message(file):
+        nonlocal receive_count
+
+        message = original_receive_message(file)
+        receive_count += 1
+
+        # Messages received by the client:
+        # 1. Server authentication challenge
+        # 2. Negotiation response
+        # 3. Server cryptographic response
+        # 4. Server key-confirmation proof
+        if receive_count == 4:
+            original_proof = base64.b64decode(
+                message["server_proof"],
+                validate=True,
+            )
+
+            # Change one byte of the server's proof.
+            modified_proof = (
+                bytes([original_proof[0] ^ 1])
+                + original_proof[1:]
+            )
+
+            message["server_proof"] = base64.b64encode(
+                modified_proof
+            ).decode("ascii")
+
+        return message
+
+    monkeypatch.setattr(
+        client_module,
+        "receive_message",
+        tampered_receive_message,
+    )
+
+    client, server = run_tcp_case(
+        ALL_CAPABILITIES,
+        ["X25519"],
+        "PQC_PREFERRED",
+    )
+
+    # The server successfully verified the client's proof.
+    assert server["key_confirmation"] == "FAILED"
+
+    # The client must reject the modified server proof.
+    assert client["execution"] == "SUCCESS"
+    assert client["key_confirmation"] == "FAILED"
+    assert client["status"] == "FAILED"

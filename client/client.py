@@ -197,12 +197,18 @@ def request_negotiation(host, port, capabilities, policy):
                 # 3. Build the authentication context.
                 server_nonce = decode_bytes(server_auth["server_nonce"])
 
+                if len(server_nonce) != 32:
+                    return {
+                        "status": "FAILED",
+                        "reason": "Invalid server nonce length.",
+                    }
+            
                 auth_context = {
                     "hello": request,
                     "server_nonce": server_auth["server_nonce"],
                 }
 
-                # 4. Verify the server's identity using the shared PSK.
+                # 4. Verify that the server possesses the shared PSK.
                 server_tag = decode_bytes(server_auth["server_auth_tag"])
 
                 if not verify_auth_tag(
@@ -300,16 +306,91 @@ def request_negotiation(host, port, capabilities, policy):
                 # 9. Receive the server's confirmation result.
                 confirmation = receive_message(file)
 
+                if confirmation.get("status") != "SUCCESS":
+                    return {
+                        **negotiation,
+                        "execution": "SUCCESS",
+                        "key_confirmation": "FAILED",
+                        "status": "FAILED",
+                        "reason": "Server key confirmation failed.",
+                    }
+
+                try:
+                    received_server_proof = decode_bytes(
+                        confirmation["server_proof"]
+                    )
+                except (KeyError, ValueError):
+                    return {
+                        **negotiation,
+                        "execution": "SUCCESS",
+                        "key_confirmation": "FAILED",
+                        "status": "FAILED",
+                        "reason": "Invalid server key confirmation proof.",
+                    }
+
+                expected_server_proof = hmac.new(
+                    session_key,
+                    b"server-finished:"
+                    + nonce
+                    + transcript_hash
+                    + proof,
+                    hashlib.sha256,
+                ).digest()
+
+                
+                server_confirmed = hmac.compare_digest(
+                    expected_server_proof,
+                    received_server_proof,
+                )
+
+                if not server_confirmed:
+                    return {
+                        **negotiation,
+                        "execution": "SUCCESS",
+                        "key_confirmation": "FAILED",
+                        "status": "FAILED",
+                        "reason": "Server key confirmation failed.",
+                    }
+
+                # Client has verified the server's proof.
+                # Now acknowledge this verification to the server.
+                client_ack = hmac.new(
+                    session_key,
+                    b"client-ack:"
+                    + nonce
+                    + transcript_hash
+                    + received_server_proof,
+                    hashlib.sha256,
+                ).digest()
+
+                send_message(
+                    file,
+                    {"client_ack": encode_bytes(client_ack)},
+                )
+
+                # Wait for the server's final acknowledgement result.
+                final_confirmation = receive_message(file)
+
+                final_status = final_confirmation.get("status")
+
+                if final_status != "SUCCESS":
+                    return {
+                        **negotiation,
+                        "execution": "SUCCESS",
+                        "key_confirmation": "FAILED",
+                        "status": "FAILED",
+                        "reason": "Server rejected client acknowledgement.",
+                    }
+
                 return {
                     **negotiation,
                     "execution": "SUCCESS",
-                    "key_confirmation": confirmation[
-                        "key_confirmation"
-                    ],
-                    "status": confirmation["status"],
+                    "key_confirmation": "SUCCESS",
+                    "status": "SUCCESS",
                     "key_length": len(session_key),
                     "algorithm": algorithm,
                 }
+
 
     finally:
         # Clean up retained private-key state if execution did not
