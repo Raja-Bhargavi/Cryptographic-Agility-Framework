@@ -1,0 +1,14 @@
+
+{
+    "mode": "PQC_PREFERRED",
+    "allowed": [
+        "X25519",
+        "ML-KEM-768",
+        "HYBRID-X25519-MLKEM768"
+    ],
+    "preference": [
+    "HYBRID-X25519-MLKEM768",
+    "ML-KEM-768",
+    "X25519"
+]
+}

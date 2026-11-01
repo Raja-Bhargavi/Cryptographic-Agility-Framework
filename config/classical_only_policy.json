@@ -1,0 +1,9 @@
+{
+    "mode": "CLASSICAL_ONLY",
+    "allowed": [
+        "X25519"
+    ],
+    "preference": [
+        "X25519"
+    ]
+}
