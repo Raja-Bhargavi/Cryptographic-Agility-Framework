@@ -1,4 +1,3 @@
-
 {
     "mode": "PQC_PREFERRED",
     "allowed": [
@@ -7,8 +6,8 @@
         "HYBRID-X25519-MLKEM768"
     ],
     "preference": [
-    "ML-KEM-768",
     "X25519",
+    "ML-KEM-768",
     "HYBRID-X25519-MLKEM768"
 ]
 }

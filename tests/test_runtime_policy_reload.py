@@ -79,3 +79,78 @@ def test_reject_missing_configuration_file(tmp_path):
 
     with pytest.raises(PolicyError):
         load_policy(path)
+
+
+
+import main
+
+
+def test_failed_runtime_reload_preserves_previous_policy(
+    tmp_path, monkeypatch
+):
+    # Start with a valid active policy.
+    previous_policy = valid_policy()
+    policy_path = tmp_path / "crypto_policy.json"
+
+    # Simulate the user pressing R.
+    monkeypatch.setattr(
+        "builtins.input",
+        lambda _: "R"
+    )
+
+    # Simulate a failed policy reload.
+    def failed_reload(path):
+        raise PolicyError("Invalid policy configuration")
+
+    monkeypatch.setattr(main, "load_policy", failed_reload)
+
+    # Attempt to reload the policy.
+    active_policy, active_path = main.prepare_policy_for_next_case(
+        previous_policy,
+        policy_path
+    )
+
+    # The previous policy must remain active.
+    assert active_policy is previous_policy
+    assert active_path == policy_path
+    assert active_policy["mode"] == "PQC_PREFERRED"
+
+
+
+def test_invalid_json_reload_preserves_previous_policy(
+    tmp_path, monkeypatch
+):
+    import main
+
+    # Create a valid policy that is already active.
+    previous_policy = valid_policy()
+    policy_path = tmp_path / "crypto_policy.json"
+
+    # Write invalid JSON to the configuration file.
+    policy_path.write_text(
+        "{ invalid json",
+        encoding="utf-8"
+    )
+
+    # Simulate pressing R to reload the configuration.
+    monkeypatch.setattr(
+        "builtins.input",
+        lambda _: "R"
+    )
+
+    # Point the reload operation to the actual policy loader.
+    monkeypatch.setattr(
+        main,
+        "load_policy",
+        load_policy
+    )
+
+    active_policy, active_path = main.prepare_policy_for_next_case(
+        previous_policy,
+        policy_path
+    )
+
+    # Verify that the previous valid policy is preserved.
+    assert active_policy is previous_policy
+    assert active_path == policy_path
+    assert active_policy["mode"] == "PQC_PREFERRED"

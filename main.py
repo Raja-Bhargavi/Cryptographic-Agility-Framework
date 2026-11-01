@@ -246,10 +246,10 @@ def main():
         runtime_policy_path,
     )
 
-    # Scenario 2: Both peers support X25519 and ML-KEM.
-    # The policy preference determines which algorithm is selected.
+    # Scenario 2A: ML-KEM is the highest-priority supported algorithm.
+    # Both peers support X25519 and ML-KEM.
     run_case(
-        "SCENARIO 2: DYNAMIC PREFERENCE — BEFORE RELOAD",
+        "SCENARIO 2A: DYNAMIC PREFERENCE — ML-KEM FIRST",
         [
             "X25519",
             "ML-KEM-768",
@@ -261,16 +261,17 @@ def main():
         runtime_policy,
     )
 
-    # Give the user a chance to update the policy before Scenario 3.
+    # Reload the policy before repeating the same negotiation
+    # with a different algorithm preference.
     runtime_policy, runtime_policy_path = prepare_policy_for_next_case(
         runtime_policy,
         runtime_policy_path,
     )
 
-    # Scenario 2: Both peers support X25519 and ML-KEM.
-    # The policy preference determines which algorithm is selected.
+    # Scenario 2B: X25519 is now the highest-priority algorithm.
+    # Client and server capabilities remain unchanged.
     run_case(
-        "SCENARIO 2: DYNAMIC PREFERENCE — BEFORE RELOAD",
+        "SCENARIO 2B: DYNAMIC PREFERENCE — X25519 FIRST",
         [
             "X25519",
             "ML-KEM-768",
