@@ -1740,5 +1740,634 @@
         ],
         "execution_status": "NOT_EXECUTED",
         "key_confirmation": "NOT_PERFORMED"
+    },
+    {
+        "timestamp": "2026-11-01T20:47:00.877121+00:00",
+        "scenario": "SCENARIO 1: POLICY-DRIVEN NEGOTIATION",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768",
+            "HYBRID-X25519-MLKEM768"
+        ],
+        "server_capabilities": [
+            "X25519",
+            "HYBRID-X25519-MLKEM768"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "X25519",
+        "common_algorithms": [
+            "HYBRID-X25519-MLKEM768",
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "HYBRID-X25519-MLKEM768",
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "NOT_SELECTED",
+                "reason": "Eligible, but a higher-priority algorithm was selected."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:48:09.671251+00:00",
+        "scenario": "SCENARIO 2: DYNAMIC PREFERENCE \u2014 BEFORE RELOAD",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "server_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "X25519",
+        "common_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "X25519",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "NOT_SELECTED",
+                "reason": "Eligible, but a higher-priority algorithm was selected."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:48:44.999470+00:00",
+        "scenario": "SCENARIO 2: DYNAMIC PREFERENCE \u2014 BEFORE RELOAD",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "server_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "ML-KEM-768",
+        "common_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "NOT_SELECTED",
+                "reason": "Eligible, but a higher-priority algorithm was selected."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:48:45.166904+00:00",
+        "scenario": "SCENARIO 3: CLASSICAL COMPATIBILITY TEST",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "server_capabilities": [
+            "X25519"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "X25519",
+        "common_algorithms": [
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:48:45.345755+00:00",
+        "scenario": "SCENARIO 4: HYBRID REQUIRED \u2014 NEGOTIATION REJECTION",
+        "client_capabilities": [
+            "X25519",
+            "HYBRID-X25519-MLKEM768"
+        ],
+        "server_capabilities": [
+            "X25519"
+        ],
+        "policy": {
+            "mode": "HYBRID_REQUIRED",
+            "allowed": [
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "REJECTED",
+        "selected_algorithm": null,
+        "common_algorithms": [
+            "X25519"
+        ],
+        "eligible_algorithms": [],
+        "decision_reason": "No mutually supported algorithm satisfies the active security policy.",
+        "audit": [
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "REJECTED",
+                "reason": "Not permitted by the active security policy."
+            }
+        ],
+        "execution_status": "NOT_EXECUTED",
+        "key_confirmation": "NOT_PERFORMED"
+    },
+    {
+        "timestamp": "2026-11-01T20:52:51.664455+00:00",
+        "scenario": "SCENARIO 1: POLICY-DRIVEN NEGOTIATION",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768",
+            "HYBRID-X25519-MLKEM768"
+        ],
+        "server_capabilities": [
+            "X25519",
+            "HYBRID-X25519-MLKEM768"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "X25519",
+        "common_algorithms": [
+            "HYBRID-X25519-MLKEM768",
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "HYBRID-X25519-MLKEM768",
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "NOT_SELECTED",
+                "reason": "Eligible, but a higher-priority algorithm was selected."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:53:11.164670+00:00",
+        "scenario": "SCENARIO 2: DYNAMIC PREFERENCE \u2014 BEFORE RELOAD",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "server_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "ML-KEM-768",
+        "common_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "NOT_SELECTED",
+                "reason": "Eligible, but a higher-priority algorithm was selected."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:53:20.980800+00:00",
+        "scenario": "SCENARIO 2: DYNAMIC PREFERENCE \u2014 BEFORE RELOAD",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "server_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "ML-KEM-768",
+        "common_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "NOT_SELECTED",
+                "reason": "Eligible, but a higher-priority algorithm was selected."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:53:21.151942+00:00",
+        "scenario": "SCENARIO 3: CLASSICAL COMPATIBILITY TEST",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "server_capabilities": [
+            "X25519"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "X25519",
+        "common_algorithms": [
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:53:21.320764+00:00",
+        "scenario": "SCENARIO 4: HYBRID REQUIRED \u2014 NEGOTIATION REJECTION",
+        "client_capabilities": [
+            "X25519",
+            "HYBRID-X25519-MLKEM768"
+        ],
+        "server_capabilities": [
+            "X25519"
+        ],
+        "policy": {
+            "mode": "HYBRID_REQUIRED",
+            "allowed": [
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "REJECTED",
+        "selected_algorithm": null,
+        "common_algorithms": [
+            "X25519"
+        ],
+        "eligible_algorithms": [],
+        "decision_reason": "No mutually supported algorithm satisfies the active security policy.",
+        "audit": [
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "REJECTED",
+                "reason": "Not permitted by the active security policy."
+            }
+        ],
+        "execution_status": "NOT_EXECUTED",
+        "key_confirmation": "NOT_PERFORMED"
+    },
+    {
+        "timestamp": "2026-11-01T20:54:13.466753+00:00",
+        "scenario": "SCENARIO 1: POLICY-DRIVEN NEGOTIATION",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768",
+            "HYBRID-X25519-MLKEM768"
+        ],
+        "server_capabilities": [
+            "X25519",
+            "HYBRID-X25519-MLKEM768"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "X25519",
+        "common_algorithms": [
+            "HYBRID-X25519-MLKEM768",
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "HYBRID-X25519-MLKEM768",
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "NOT_SELECTED",
+                "reason": "Eligible, but a higher-priority algorithm was selected."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
+    },
+    {
+        "timestamp": "2026-11-01T20:54:44.110335+00:00",
+        "scenario": "SCENARIO 2: DYNAMIC PREFERENCE \u2014 BEFORE RELOAD",
+        "client_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "server_capabilities": [
+            "X25519",
+            "ML-KEM-768"
+        ],
+        "policy": {
+            "mode": "PQC_PREFERRED",
+            "allowed": [
+                "X25519",
+                "ML-KEM-768",
+                "HYBRID-X25519-MLKEM768"
+            ],
+            "preference": [
+                "ML-KEM-768",
+                "X25519",
+                "HYBRID-X25519-MLKEM768"
+            ]
+        },
+        "negotiation_status": "SUCCESS",
+        "selected_algorithm": "ML-KEM-768",
+        "common_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "eligible_algorithms": [
+            "ML-KEM-768",
+            "X25519"
+        ],
+        "decision_reason": "Selected highest-priority mutually supported algorithm permitted by policy.",
+        "audit": [
+            {
+                "algorithm": "ML-KEM-768",
+                "decision": "ELIGIBLE",
+                "reason": "Mutually supported and permitted by policy."
+            },
+            {
+                "algorithm": "X25519",
+                "decision": "NOT_SELECTED",
+                "reason": "Eligible, but a higher-priority algorithm was selected."
+            },
+            {
+                "algorithm": "HYBRID-X25519-MLKEM768",
+                "decision": "REJECTED",
+                "reason": "Not supported by both peers."
+            }
+        ],
+        "execution_status": "SUCCESS",
+        "key_confirmation": "SUCCESS"
     }
 ]

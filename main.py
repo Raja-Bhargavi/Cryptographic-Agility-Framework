@@ -246,14 +246,16 @@ def main():
         runtime_policy_path,
     )
 
-    # Scenario 2: Both peers support ML-KEM, but not hybrid.
+    # Scenario 2: Both peers support X25519 and ML-KEM.
+    # The policy preference determines which algorithm is selected.
     run_case(
-        "SCENARIO 2: POST-QUANTUM ML-KEM NEGOTIATION",
+        "SCENARIO 2: DYNAMIC PREFERENCE — BEFORE RELOAD",
         [
             "X25519",
             "ML-KEM-768",
         ],
         [
+            "X25519",
             "ML-KEM-768",
         ],
         runtime_policy,
@@ -263,6 +265,21 @@ def main():
     runtime_policy, runtime_policy_path = prepare_policy_for_next_case(
         runtime_policy,
         runtime_policy_path,
+    )
+
+    # Scenario 2: Both peers support X25519 and ML-KEM.
+    # The policy preference determines which algorithm is selected.
+    run_case(
+        "SCENARIO 2: DYNAMIC PREFERENCE — BEFORE RELOAD",
+        [
+            "X25519",
+            "ML-KEM-768",
+        ],
+        [
+            "X25519",
+            "ML-KEM-768",
+        ],
+        runtime_policy,
     )
 
     # Scenario 3: Server supports only classical X25519.

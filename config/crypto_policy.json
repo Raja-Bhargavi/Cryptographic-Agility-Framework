@@ -7,8 +7,8 @@
         "HYBRID-X25519-MLKEM768"
     ],
     "preference": [
-    "HYBRID-X25519-MLKEM768",
     "ML-KEM-768",
-    "X25519"
+    "X25519",
+    "HYBRID-X25519-MLKEM768"
 ]
 }
