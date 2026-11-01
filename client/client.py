@@ -113,7 +113,7 @@ def cleanup_client_state(algorithm, client_state):
 
     elif algorithm == "HYBRID-X25519-MLKEM768":
         provider, state = client_state
-        provider.pqc_provider.close_keypair(state.pqc_key_handle)
+        provider.pqc.close_keypair(state.pqc_key_handle)
 
 
 def complete_client_operation(algorithm, server_response, client_state):

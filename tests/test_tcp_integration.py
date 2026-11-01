@@ -279,3 +279,60 @@ def test_tcp_detects_modified_server_proof(monkeypatch):
     assert client["execution"] == "SUCCESS"
     assert client["key_confirmation"] == "FAILED"
     assert client["status"] == "FAILED"
+
+
+
+def test_tcp_detects_modified_client_ack(monkeypatch):
+    """Verify that the server rejects a modified client acknowledgement."""
+
+    import base64
+    import client.client as client_module
+
+    original_send_message = client_module.send_message
+
+    def tampered_send_message(file, message):
+        if "client_ack" in message:
+            original_ack = base64.b64decode(
+                message["client_ack"],
+                validate=True,
+            )
+
+            # Change one byte of the client's acknowledgement.
+            modified_ack = (
+                bytes([original_ack[0] ^ 1])
+                + original_ack[1:]
+            )
+
+            modified_message = {
+                **message,
+                "client_ack": base64.b64encode(
+                    modified_ack
+                ).decode("ascii"),
+            }
+
+            return original_send_message(file, modified_message)
+
+        return original_send_message(file, message)
+
+    monkeypatch.setattr(
+        client_module,
+        "send_message",
+        tampered_send_message,
+    )
+
+    client, server = run_tcp_case(
+        ALL_CAPABILITIES,
+        ["X25519"],
+        "PQC_PREFERRED",
+    )
+
+    # The cryptographic operation itself completed.
+    assert client["execution"] == "SUCCESS"
+    assert server["execution"] == "SUCCESS"
+
+    # The client receives the server's rejection of its modified ACK.
+    assert client["key_confirmation"] == "FAILED"
+    assert client["status"] == "FAILED"
+
+    # The server must reject the modified acknowledgement.
+    assert server["key_confirmation"] == "FAILED"
